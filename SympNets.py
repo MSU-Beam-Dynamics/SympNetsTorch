@@ -6,7 +6,7 @@ import torch.nn as nn
 
 
 def x_to_pq(x: torch.Tensor) -> torch.Tensor:
-    """Converts X (x, px, y, py) to PQ (x, y, px, py) for sympletic layers.
+    """Converts X (x, px, y, py) to PQ (px, py, x, y) for sympletic layers.
     Putting in PQ instead of X will return X.
 
     Args:
@@ -62,16 +62,11 @@ def batch_mul_matrix_vector(mat: torch.Tensor, pq: torch.Tensor) -> torch.Tensor
     Raises:
     - None
     """
-    pq_size = pq.size()
 
-    if len(pq_size) == 2:
-        # This is a batch
-        pq = torch.bmm(mat.repeat(pq_size[0], 1, 1), pq.unsqueeze(-1)).squeeze(-1)
+    # Used to be more complicated but this is faster.
+    # Now I have a whole function for a one-liner, great.
 
-    else:
-        pq = torch.mv(mat, pq)
-
-    return pq
+    return torch.matmul(mat, pq.T).T
 
 
 def activate_matrix(

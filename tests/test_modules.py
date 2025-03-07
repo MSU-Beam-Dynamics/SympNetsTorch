@@ -163,9 +163,14 @@ def test_modules(
     nn_model.eval()
     output_data = torch.cat((nn_model(train_x), nn_model(test_x)), dim=0)
 
-    # torch.save(output_data, test_dir / "output_data.pt")  # save data for testing
+    # torch.save(output_data, test_dir / "output_data_cpu.pt")  # save data for testing
 
-    truth = torch.load(test_dir / "output_data.pt")
+    # ! Code produces slightly different results on CPU vs GPU
+    # ! For now we will load different test versions based on device
+    if device == torch.device("cuda:0"):
+        truth = torch.load(test_dir / "output_data.pt")
+    else:
+        truth = torch.load(test_dir / "output_data_cpu.pt")
 
     if torch.allclose(output_data, truth, atol=1e-5):
         success = True

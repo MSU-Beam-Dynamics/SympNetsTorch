@@ -21,5 +21,5 @@ classifiers = [
 # TODO Add example files
 
 [project.urls]
-"Bug Tracker" = "https://github.com/MSU-Beam-Dynamics/SympNetsTorch/issues"
 Homepage = "https://github.com/MSU-Beam-Dynamics/SympNetsTorch"
+"Bug Tracker" = "https://github.com/MSU-Beam-Dynamics/SympNetsTorch/issues"
